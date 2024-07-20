@@ -39,6 +39,12 @@ async function run() {
             const result = await spotsCollection.find().toArray();
             res.send(result);
         })
+        app.get('/addTouristsSpot/:id', async (req, res) => {
+            const query = { _id: new ObjectId(req.params.id) }
+            const result = await spotsCollection.findOne(query);
+            // console.log(result);
+            res.send(result);
+        })
 
 
 
