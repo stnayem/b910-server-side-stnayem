@@ -39,9 +39,45 @@ async function run() {
             const result = await spotsCollection.find().toArray();
             res.send(result);
         })
+
+        app.get('/myCart/:email', async (req, res) => {
+            // console.log(req.params.email);
+            const result = await spotsCollection.find({ userEmail: req.params.email }).toArray();
+            res.send(result);
+        });
+
+
         app.get('/addTouristsSpot/:id', async (req, res) => {
             const query = { _id: new ObjectId(req.params.id) }
             const result = await spotsCollection.findOne(query);
+            // console.log(result);
+            res.send(result);
+        })
+
+        app.put('/addTouristsSpot/:id', async (req, res) => {
+            const filter = { _id: new ObjectId(req.params.id) }
+
+            const dataUpdate = {
+                $set: {
+                    photoUrl: req.body.photoUrl,
+                    spotName: req.body.spotName,
+                    country: req.body.country,
+                    location: req.body.location,
+                    short_description: req.body.short_description,
+                    cost: req.body.cost,
+                    seasonality: req.body.seasonality,
+                    travelTime: req.body.travelTime,
+                    totalVisitorsPerYear: req.body.totalVisitorsPerYear,
+                }
+            }
+            // console.log(dataUpdate);
+            const result = await spotsCollection.updateOne(filter, dataUpdate);
+            res.send(result);
+        })
+
+        app.delete('/addTouristsSpot/:id', async (req, res) => {
+            const query = { _id: new ObjectId(req.params.id) }
+            const result = await spotsCollection.deleteOne(query);
             // console.log(result);
             res.send(result);
         })
