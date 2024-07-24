@@ -28,11 +28,12 @@ async function run() {
         await client.connect();
 
         const spotsCollection = client.db('tourismDB').collection('spot');
+        const countryCollection = client.db('tourismDB').collection('country');
 
         app.post('/addTouristsSpot', async (req, res) => {
             const spotDetails = req.body;
             const result = await spotsCollection.insertOne(spotDetails);
-            res.send(result);
+            res.send(result)
         })
 
         app.get('/addTouristsSpot', async (req, res) => {
@@ -51,6 +52,16 @@ async function run() {
             const query = { _id: new ObjectId(req.params.id) }
             const result = await spotsCollection.findOne(query);
             // console.log(result);
+            res.send(result);
+        })
+
+        app.get('/allCountry', async (req, res) => {
+            const result = await countryCollection.find().toArray();
+            console.log(result);
+            res.send(result)
+        })
+        app.get('/allCountry/:country', async (req, res) => {
+            const result = await spotsCollection.find({ country: req.params.country }).toArray();
             res.send(result);
         })
 
@@ -101,7 +112,7 @@ app.get('/', async (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Coffee server is running on port: ${port}`);
+    console.log(`Coffee server is running on port: http://localhost:${port}`);
 })
 
 
