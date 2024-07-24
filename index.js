@@ -62,6 +62,7 @@ async function run() {
         })
         app.get('/allCountry/:country', async (req, res) => {
             const result = await spotsCollection.find({ country: req.params.country }).toArray();
+            //sending respond for individual country's all tourist spots
             res.send(result);
         })
 
