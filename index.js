@@ -6,7 +6,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5005;
 
-//middleware
+//middleware//
 app.use(cors());
 app.use(express.json());
 
@@ -76,6 +76,7 @@ async function run() {
                     country: req.body.country,
                     location: req.body.location,
                     short_description: req.body.short_description,
+                    long_description: req.body.long_description,
                     cost: req.body.cost,
                     seasonality: req.body.seasonality,
                     travelTime: req.body.travelTime,
