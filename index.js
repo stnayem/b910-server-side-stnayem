@@ -1,13 +1,23 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const app = express();
 const port = process.env.PORT || 5005;
 
+const allowedOrigins = [
+    "http://localhost:5173",  // Client-side (React app) running locally
+    "https://b910-client-side-stnayem.web.app",  // Client-side deployed on firebase
+    "http://localhost:5005"  // Server-side running locally (Vercel, for example)
+];
+
+
+
+
 //middleware//
-app.use(cors());
+app.use(cors({ origin: allowedOrigins }));
+// app.use(cors());
 app.use(express.json());
 
 // const uri = "mongodb+srv://<username>:<password>@cluster0.yme0t2s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -25,7 +35,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const spotsCollection = client.db('tourismDB').collection('spot');
         const countryCollection = client.db('tourismDB').collection('country');
@@ -57,7 +67,7 @@ async function run() {
 
         app.get('/allCountry', async (req, res) => {
             const result = await countryCollection.find().toArray();
-            console.log(result);
+            // console.log(result);
             res.send(result)
         })
         app.get('/allCountry/:country', async (req, res) => {
@@ -98,8 +108,8 @@ async function run() {
 
 
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        // await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
         // await client.close();
